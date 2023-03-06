@@ -1,0 +1,86 @@
+spring:
+  datasource:
+    etl:
+      jdbc-url: jdbc:mysql://192.168.1.159:3306/test?charset=utf8&serverTimezone=UTC
+      username: root
+      password: admin12345
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      connection-test-query: SELECT 1 FROM DUAL
+      connection-timeout: 30000
+      maximum-pool-size: 100
+      max-lifetime: 180000
+      minimum-idle: 10
+      pool-name: etl_pool
+    source:
+      jdbc-url: jdbc:mysql://192.168.1.52:3306/scrapy_db?charset=utf8&serverTimezone=UTC
+      username: scrapy_db
+      password: scrapy_db@123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      connection-test-query: SELECT 1 FROM DUAL
+      connection-timeout: 30000
+      maximum-pool-size: 100
+      max-lifetime: 180000
+      minimum-idle: 10
+      pool-name: source_pool
+    target:
+      jdbc-url: jdbc:mysql://192.168.1.159:3306/binsearch3?charset=utf8&serverTimezone=UTC
+      username: root
+      password: admin12345
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      connection-test-query: SELECT 1 FROM DUAL
+      connection-timeout: 30000
+      maximum-pool-size: 100
+      max-lifetime: 180000
+      minimum-idle: 10
+      pool-name: target_pool
+    datasync:
+      jdbc-url: jdbc:mysql://192.168.10.129:3306/binsearch3?charset=utf8&serverTimezone=UTC
+      username: root
+      password: root123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      connection-test-query: SELECT 1 FROM DUAL
+      connection-timeout: 30000
+      maximum-pool-size: 100
+      max-lifetime: 180000
+      minimum-idle: 10
+      pool-name: vuln_pool
+
+
+
+
+base:
+  thread:
+    extract: 30
+    analysis: 10
+  cache:
+    # 任务缓存大小
+    maximum: 1000000
+  system:
+    source:
+      #GIT,MAVEN
+      sourceType: MAVEN,GIT
+      # 源代码生数据文件路径
+      path:
+        git: /home/virtual/components/sourcecode
+        maven: /home/virtual/components/src_code/mvnrepository
+    # 源代码熟数据路径
+    targetFileRootPath: /home/virtual/components/source_unique_base
+    # 源代码去重文件夹
+    targetFileDir: sourceFile
+  service:
+    # 引擎类型
+    #COMPONENT2FILE_ENGINE,FILE2FEATURE_ENGINE,FUNC2FEATURE_ENGINE,SYNC_ENGINE,FILE2TYPE3FEATURE_ENGINE
+    #OUTPUTSQL_ENGINE,ELASTICSEARCH_ENGINE
+    engine: COMPONENT2FILE_ENGINE
+    # 定向处理
+    specify:
+      # 指定导入的组件Id
+      # 118:[v7.6.0.zip,...]@...格式
+      components: 229283
+      running: false
+    # 增量处理
+    incremental:
+      running: false
+    # 全量处理
+    full:
+      running: true
